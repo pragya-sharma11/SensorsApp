@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             wifiManager.setWifiEnabled(true);
         }
         else {
-
+            imageView.setImageResource(R.drawable.off);
+            mediaPlayer.pause();
+            bluetoothAdapter.disable();
+            wifiManager.setWifiEnabled(false);
         }
     }
 
