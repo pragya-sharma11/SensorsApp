@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     ImageView imageView;
@@ -41,12 +42,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             mediaPlayer.start();
             bluetoothAdapter.enable();
             wifiManager.setWifiEnabled(true);
+            Toast.makeText(this, "Bluetooth and wifi on", Toast.LENGTH_SHORT).show();
         }
         else {
             imageView.setImageResource(R.drawable.off);
             mediaPlayer.pause();
             bluetoothAdapter.disable();
             wifiManager.setWifiEnabled(false);
+            Toast.makeText(this, "Bluetooth and wifi off", Toast.LENGTH_SHORT).show();
         }
     }
 
