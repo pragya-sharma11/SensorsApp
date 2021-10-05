@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         imageView = findViewById(R.id.imageView);
         mediaPlayer = MediaPlayer.create(this, R.raw.y);
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         bluetoothAdapter = (BluetoothAdapter.getDefaultAdapter());
         wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        int x = (int) event.values[0];
-        if(x!=0){
+        int x = (int) event.values[1];
+        if(x>=1){
             imageView.setImageResource(R.drawable.on);
             mediaPlayer.start();
             bluetoothAdapter.enable();
