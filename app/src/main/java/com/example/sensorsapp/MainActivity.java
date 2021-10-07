@@ -7,6 +7,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     BluetoothAdapter bluetoothAdapter;
     WifiManager wifiManager;
     MediaPlayer mediaPlayer;
+    CameraManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         bluetoothAdapter = (BluetoothAdapter.getDefaultAdapter());
         wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
+        cm = (CameraManager) getSystemService(CAMERA_SERVICE);
     }
 
     @Override
@@ -42,13 +46,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             mediaPlayer.start();
             bluetoothAdapter.enable();
             wifiManager.setWifiEnabled(true);
+            flashOn();
             Toast.makeText(this, "Bluetooth and wifi on", Toast.LENGTH_SHORT).show();
+
         }
         else {
             imageView.setImageResource(R.drawable.off);
             mediaPlayer.pause();
             bluetoothAdapter.disable();
             wifiManager.setWifiEnabled(false);
+            flashOff();
             Toast.makeText(this, "Bluetooth and wifi off", Toast.LENGTH_SHORT).show();
         }
     }
@@ -56,5 +63,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    public void flashOn(){
+        try {
+            String id = cm.getCameraIdList()[0];
+            cm.setTorchMode(id, true);
+        }
+        catch (CameraAccessException e){
+
+        }
+    }
+    public void flashOff(){
+        try {
+            String id = cm.getCameraIdList()[0];
+            cm.setTorchMode(id, false);
+        }
+        catch (CameraAccessException e){
+
+        }
     }
 }
